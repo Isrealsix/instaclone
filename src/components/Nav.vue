@@ -21,7 +21,7 @@ const isAuthenticated = ref(false);
 						@search="onSearch"
 					/>
 				</div>
-				<div class="left-content" v-if="1!isAuthenticated">
+				<div class="left-content" v-if="!isAuthenticated">
 					<!-- <AButton type="primary">Signup</AButton> -->
 					<!-- <AButton type="primary">Login</AButton> -->
 					<AuthModal :isLogin="false" />
