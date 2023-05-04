@@ -2,6 +2,8 @@
 import { RouterLink } from 'vue-router';
 import Container from './Container.vue';
 import { ref } from 'vue';
+import AuthModal from './AuthModal.vue';
+
 const searchUsername = ref('');
 const onSearch = () => {};
 </script>
@@ -20,7 +22,8 @@ const onSearch = () => {};
 				</div>
 				<div class="left-content">
 					<AButton type="primary">Signup</AButton>
-					<AButton type="primary">Login</AButton>
+					<!-- <AButton type="primary">Login</AButton> -->
+					<AuthModal />
 				</div>
 			</div>
 		</Container>
@@ -42,6 +45,10 @@ const onSearch = () => {};
 	margin-right: 10px;
 }
 
+.left-content {
+	display: flex;
+	align-items: center;
+}
 .left-content button {
 	margin-left: 10px;
 }
