@@ -21,9 +21,10 @@ const onSearch = () => {};
 					/>
 				</div>
 				<div class="left-content">
-					<AButton type="primary">Signup</AButton>
+					<!-- <AButton type="primary">Signup</AButton> -->
 					<!-- <AButton type="primary">Login</AButton> -->
-					<AuthModal />
+					<AuthModal :isLogin="false" />
+					<AuthModal :is-login="true" />
 				</div>
 			</div>
 		</Container>
@@ -48,9 +49,6 @@ const onSearch = () => {};
 .left-content {
 	display: flex;
 	align-items: center;
-}
-.left-content button {
-	margin-left: 10px;
 }
 
 </style>
