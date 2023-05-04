@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HelloWorldVue from './components/HelloWorld.vue';
+import HomeView from './views/HomeView.vue';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -7,7 +7,7 @@ const router = createRouter({
 		{
 			path: "/",
 			name: "quizes",
-			component: HelloWorldVue
+			component: HomeView
 		}
 	]
 });
