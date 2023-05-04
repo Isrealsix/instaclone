@@ -5,7 +5,8 @@ import { ref } from 'vue';
 import AuthModal from './AuthModal.vue';
 
 const searchUsername = ref('');
-const onSearch = () => {};
+const onSearch = () => { };
+const isAuthenticated = ref(false);
 </script>
 <template>
 	<ALayoutHeader>
@@ -20,11 +21,16 @@ const onSearch = () => {};
 						@search="onSearch"
 					/>
 				</div>
-				<div class="left-content">
+				<div class="left-content" v-if="1!isAuthenticated">
 					<!-- <AButton type="primary">Signup</AButton> -->
 					<!-- <AButton type="primary">Login</AButton> -->
 					<AuthModal :isLogin="false" />
 					<AuthModal :is-login="true" />
+				</div>
+
+				<div class="left-content" v-else>
+					<AButton type="primary">Profile</AButton>
+					<AButton type="primary">Logout</AButton>
 				</div>
 			</div>
 		</Container>
@@ -50,5 +56,7 @@ const onSearch = () => {};
 	display: flex;
 	align-items: center;
 }
-
+.left-content button {
+	margin-left: 10px;
+}
 </style>
