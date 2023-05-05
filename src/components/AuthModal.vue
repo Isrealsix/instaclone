@@ -2,12 +2,17 @@
 import { ref, reactive } from 'vue';
 import { useUserStore } from '../stores/users';
 
+// import { storeToRefs } from 'pinia'
+// const { name, doubleCount } = storeToRefs(store)
+/* 
+* When using only state, it is important to use storeToRefs for reactivity
+* When calling actions, you can destructure state and ignore storeToRefs
+*/
 interface IProps {
 	isLogin: boolean
 }
 
 const userStore = useUserStore();
-const { handleSignup } = userStore;
 
 const props = defineProps<IProps>()
 const visible = ref<boolean>(false);
@@ -21,7 +26,7 @@ const showModal = () => {
 }
 
 function handleOk(e: Event) {
-	handleSignup(input);
+	userStore.handleSignup(input);
 	console.log(e)
 	// visible.value = false
 }
