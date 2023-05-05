@@ -1,40 +1,46 @@
 import { defineStore } from 'pinia';
-import { ref, reactive } from 'vue';
+import { validateEmail } from '../helpers';
 
-export const useUserStore = defineStore('users', () => {
-	const user = ref(null);
-	const response = reactive({
-		message: ''
-	});
+export const useUserStore = defineStore({
+	id: 'user',
+	state: () => ({
+		username: '',
+		email: '',
+		password: '',
+		errorMessage: ''
+	}),
+	getters: {},
+	actions: {
+		handleSignup(credentials: {
+			username: string;
+			email: string;
+			password: string;
+		}) {
+			const { email, password, username } = credentials;
 
-	const validateEmail = (email: string) => {
-		return String(email)
-			.toLowerCase()
-			.match(
-				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-			);
-	};
-	const handleLogin = () => { }
-	
-	const handleSignup = (credentials: any) => {
-		const { email, password, username } = credentials;
+			if (password.length < 6) {
+				console.log('short pass')
+				return this.errorMessage = 'Password length is too short'
+			}
 
-		if (password.length < 6) {
-			return response.message = 'Password length is too short'
-		}
+			if (username.length < 4) {
+				console.log('short usr')
+				return this.errorMessage = 'Username is too short'
+			}
 
-		if (username.length < 4) {
-			return response.message = 'Username is too short'
-		}
+			if (!validateEmail(email)) {
+				console.log('short email')
+				return this.errorMessage = 'Email is invalid'
+			}
 
-		if (!validateEmail(email)) {
-			return response.message = 'Email is invalid'
+			this.errorMessage = ''
 		}
 	}
+	// const handleLogin = () => { }
 	
-	const handleLogout = () => { }
+	// const handleLogout = () => { }
 	
-	const getUser = () => { }
+	// const getUser = () => { }
 	
-	return { handleLogin, response, handleSignup, handleLogout, getUser }
+	// return { handleLogin, response, handleSignup, handleLogout, getUser }
 })
