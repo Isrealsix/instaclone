@@ -26,7 +26,15 @@ const showModal = () => {
 };
 
 async function handleOk() {
-	await userStore.handleSignup(input);
+	if (props.isLogin) {
+		await userStore.handleLogin({
+			password: input.password,
+			email: input.email
+	});
+
+	} else {
+		await userStore.handleSignup(input)
+	}
 	if (userStore.user.id) {
 		visible.value = false;
 		clearInput();

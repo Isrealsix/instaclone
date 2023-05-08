@@ -80,14 +80,48 @@ export const useUserStore = defineStore({
 		},
 		clearErrorMessage() {
 			this.errorMessage = ''
+		},
+
+		async handleLogin(credentials) {
+			const { email, password } = credentials;
+
+			if (!validateEmail(email)) {
+				return this.errorMessage = 'Email is invalid'
+			}
+
+			if (!password.length) {
+				return this.errorMessage = 'Password cannot be empty'
+			}
+
+			this.loading = true;
+			const { error } = await supabase.auth.signInWithPassword({
+				email,
+				password
+			})
+			if (error) {
+				this.loading = false;
+				return this.errorMessage = error.message
+			}
+
+			const { data: loggedUser } = await supabase
+				.from('users')
+				.select()
+				.eq('email', email)
+				.single()
+			
+			this.user.id = loggedUser.id
+			this.user.email = loggedUser.email
+			this.user.username = loggedUser.username
+
+			this.loading = false;
+			this.errorMessage = ''
 		}
+		// handleLogout = () { }
+		
+		// getUser () { }
 	},
 
-	// const handleLogin = () => { }
 	
-	// const handleLogout = () => { }
-	
-	// const getUser = () => { }
 	
 	// return { handleLogin, response, handleSignup, handleLogout, getUser }
 })
