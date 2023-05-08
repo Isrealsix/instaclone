@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { validateEmail } from '../helpers';
+import { supabase } from '../supabase';
 
 export const useUserStore = defineStore({
 	id: 'user',
@@ -11,7 +12,7 @@ export const useUserStore = defineStore({
 	}),
 	getters: {},
 	actions: {
-		handleSignup(credentials: {
+		async handleSignup(credentials: {
 			username: string;
 			email: string;
 			password: string;
@@ -19,21 +20,34 @@ export const useUserStore = defineStore({
 			const { email, password, username } = credentials;
 
 			if (password.length < 6) {
-				console.log('short pass')
 				return this.errorMessage = 'Password length is too short'
 			}
 
 			if (username.length < 4) {
-				console.log('short usr')
 				return this.errorMessage = 'Username is too short'
 			}
 
 			if (!validateEmail(email)) {
-				console.log('short email')
 				return this.errorMessage = 'Email is invalid'
 			}
 
 			this.errorMessage = ''
+
+			// validate if user exists
+
+			const {error} = await supabase.auth.signUp({
+				email,
+				password
+			})
+			if (error) {
+				console.log(error, 'of fetched error')
+				return this.errorMessage = error.message
+			}
+			const res = await supabase.from('users').insert({
+				username,
+				email
+			})
+			console.log(res, 'trying to insert')
 		}
 	}
 	// const handleLogin = () => { }
