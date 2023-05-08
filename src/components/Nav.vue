@@ -3,16 +3,17 @@ import { RouterLink, useRouter } from 'vue-router';
 import Container from './Container.vue';
 import { ref } from 'vue';
 import AuthModal from './AuthModal.vue';
+import { useUserStore } from '../stores/users';
 
+const userStore = useUserStore();
 const router = useRouter();
 const searchUsername = ref('');
 const onSearch = () => {
 	if (searchUsername.value) {
-		router.push(`/profile/${searchUsername.value}`)
+		router.push(`/profile/${searchUsername.value}`);
 		searchUsername.value = '';
 	}
 };
-const isAuthenticated = ref(false);
 </script>
 <template>
 	<ALayoutHeader>
@@ -27,16 +28,18 @@ const isAuthenticated = ref(false);
 						@search="onSearch"
 					/>
 				</div>
-				<div class="left-content" v-if="!isAuthenticated">
-					<!-- <AButton type="primary">Signup</AButton> -->
-					<!-- <AButton type="primary">Login</AButton> -->
-					<AuthModal :isLogin="false" />
-					<AuthModal :is-login="true" />
-				</div>
+				<div class="content" v-if="!userStore.loadingUser">
+					<div class="left-content" v-if="!userStore.user.id">
+						<!-- <AButton type="primary">Signup</AButton> -->
+						<!-- <AButton type="primary">Login</AButton> -->
+						<AuthModal :isLogin="false" />
+						<AuthModal :is-login="true" />
+					</div>
 
-				<div class="left-content" v-else>
-					<AButton type="primary">Profile</AButton>
-					<AButton type="primary">Logout</AButton>
+					<div class="left-content" v-else>
+						<AButton type="primary">Profile</AButton>
+						<AButton type="primary">Logout</AButton>
+					</div>
 				</div>
 			</div>
 		</Container>
@@ -44,6 +47,11 @@ const isAuthenticated = ref(false);
 </template>
 
 <style scoped>
+
+.content {
+	display: flex;
+	align-items: center;
+}
 .nav-container {
 	display: flex;
 	justify-content: space-between;

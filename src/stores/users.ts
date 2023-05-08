@@ -2,6 +2,11 @@ import { defineStore } from 'pinia';
 import { validateEmail } from '../helpers';
 import { supabase } from '../supabase';
 
+const initialUser = {
+	id: '',
+	email: '',
+	username: ''
+}
 export const useUserStore = defineStore({
 	id: 'user',
 	state: () => ({
@@ -10,11 +15,8 @@ export const useUserStore = defineStore({
 		password: '',
 		loading: false,
 		errorMessage: '',
-		user: {
-			id: '',
-			email: '',
-			username: ''
-		}
+		loadingUser: false,
+		user: initialUser
 	}),
 	getters: {},
 	actions: {
@@ -117,8 +119,13 @@ export const useUserStore = defineStore({
 			this.errorMessage = ''
 		},
 		async getUser() {
-			this.loading = true
-			const {data} = await supabase.auth.getUser();
+			this.loadingUser = true
+			const { data } = await supabase.auth.getUser();
+			
+			if (!data.user) {
+				this.loadingUser = false;
+				return this.user = initialUser;
+			}
 			const { data: userWithEmail } = await supabase
 				.from('users')
 				.select()
@@ -129,7 +136,7 @@ export const useUserStore = defineStore({
 			this.user.id = userWithEmail.id
 			this.user.username = userWithEmail.username
 
-			this.loading = false
+			this.loadingUser = false
 		}
 		// handleLogout = () { }
 		
