@@ -8,6 +8,7 @@ export const useUserStore = defineStore({
 		username: '',
 		email: '',
 		password: '',
+		loading: false,
 		errorMessage: ''
 	}),
 	getters: {},
@@ -32,6 +33,7 @@ export const useUserStore = defineStore({
 			}
 
 			// validate if user exists
+			this.loading = true
 			const {data: userWithUsername } = await supabase
 				.from('users')
 				.select()
@@ -39,6 +41,7 @@ export const useUserStore = defineStore({
 				.single();
 			
 			if (userWithUsername) {
+				this.loading = false
 				return this.errorMessage = 'User already exists'
 			}
 
@@ -48,13 +51,15 @@ export const useUserStore = defineStore({
 				password
 			})
 			if (error) {
+				this.loading = false
 				console.log(error, 'of fetched error')
 				return this.errorMessage = error.message
 			}
 			await supabase.from('users').insert({
 				username,
 				email
-			})
+			});
+			this.loading = false
 		},
 		clearErrorMessage() {
 			this.errorMessage = ''
