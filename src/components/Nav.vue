@@ -14,6 +14,11 @@ const onSearch = () => {
 		searchUsername.value = '';
 	}
 };
+
+async function handleLogout() {
+	await userStore.handleLogout();
+	console.log(userStore.user, 'of userrr')
+}
 </script>
 <template>
 	<ALayoutHeader>
@@ -38,7 +43,7 @@ const onSearch = () => {
 
 					<div class="left-content" v-else>
 						<AButton type="primary">Profile</AButton>
-						<AButton type="primary">Logout</AButton>
+						<AButton type="primary" @click="handleLogout">Logout</AButton>
 					</div>
 				</div>
 			</div>

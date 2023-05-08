@@ -137,8 +137,15 @@ export const useUserStore = defineStore({
 			this.user.username = userWithEmail.username
 
 			this.loadingUser = false
+		},
+		async handleLogout () {
+			await supabase.auth.signOut();
+			
+			this.user.email = '';
+			this.user.id = '';
+			this.user.username = ''
+			console.log(this.user, 'in store')
 		}
-		// handleLogout = () { }
 		
 	},
 
