@@ -31,10 +31,18 @@ export const useUserStore = defineStore({
 				return this.errorMessage = 'Email is invalid'
 			}
 
-			this.errorMessage = ''
-
 			// validate if user exists
+			const {data: userWithUsername } = await supabase
+				.from('users')
+				.select()
+				.eq('username', username)
+				.single();
+			
+			if (userWithUsername) {
+				return this.errorMessage = 'User already exists'
+			}
 
+			this.errorMessage = ''
 			const {error} = await supabase.auth.signUp({
 				email,
 				password
@@ -43,11 +51,10 @@ export const useUserStore = defineStore({
 				console.log(error, 'of fetched error')
 				return this.errorMessage = error.message
 			}
-			const res = await supabase.from('users').insert({
+			await supabase.from('users').insert({
 				username,
 				email
 			})
-			console.log(res, 'trying to insert')
 		}
 	}
 	// const handleLogin = () => { }
