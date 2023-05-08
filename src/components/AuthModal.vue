@@ -25,14 +25,23 @@ const showModal = () => {
 	visible.value = true;
 };
 
-function handleOk(e: Event) {
-	userStore.handleSignup(input);
-	console.log(e);
-	// visible.value = false
+async function handleOk() {
+	await userStore.handleSignup(input);
+	if (userStore.user.id) {
+		visible.value = false;
+		clearInput();
+	}
+}
+
+function clearInput() {
+	input.email = '';
+	input.username = '';
+	input.password = '';
+	userStore.clearErrorMessage();
 }
 
 function handleCancel() {
-	userStore.clearErrorMessage();
+	clearInput();
 	visible.value = false;
 }
 
