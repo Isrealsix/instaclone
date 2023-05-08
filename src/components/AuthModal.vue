@@ -44,7 +44,14 @@ const title = props.isLogin ? 'Login' : 'Signup';
 		<AModal v-model:visible="visible" :title="title" @ok="handleOk">
 			<template #footer>
 				<AButton key="back" @click="handleCancel"> Cancel </AButton>
-				<AButton key="submit" type="primary" @click="handleOk"> Ok </AButton>
+				<AButton
+					key="submit"
+					type="primary"
+					@click="handleOk"
+					:disabled="userStore.loading"
+				>
+					Submit
+				</AButton>
 			</template>
 			<div v-if="!userStore.loading" class="input-container">
 				<AInput
@@ -82,5 +89,16 @@ const title = props.isLogin ? 'Login' : 'Signup';
 
 .input {
 	margin-top: 5px;
+}
+
+.input-container {
+	height: 120px;
+}
+
+.spinner {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 120px;
 }
 </style>
