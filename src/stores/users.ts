@@ -55,8 +55,12 @@ export const useUserStore = defineStore({
 				username,
 				email
 			})
+		},
+		clearErrorMessage() {
+			this.errorMessage = ''
 		}
-	}
+	},
+
 	// const handleLogin = () => { }
 	
 	// const handleLogout = () => { }

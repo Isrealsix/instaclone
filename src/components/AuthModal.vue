@@ -31,12 +31,25 @@ function handleOk(e: Event) {
 	// visible.value = false
 }
 
+function handleCancel() {
+	userStore.clearErrorMessage();
+	visible.value = false;
+}
+
 const title = props.isLogin ? 'Login' : 'Signup';
 </script>
 <template>
 	<div>
 		<AButton type="primary" @click="showModal" class="btn">{{ title }}</AButton>
 		<AModal v-model:visible="visible" :title="title" @ok="handleOk">
+			<template #footer>
+				<AButton key="back" @click="handleCancel">
+					Cancel
+				</AButton>
+				<AButton key="submit" type="primary" @click="handleOk">
+					Ok
+				</AButton>
+			</template>
 			<AInput class="input" v-if="!isLogin" v-model:value="input.username" placeholder="Username">Basic usage</AInput>
 			<AInput class="input" v-model:value="input.email" placeholder="Email">Basic usage</AInput>
 			<AInput class="input" v-model:value="input.password" placeholder="Password" type="password">Basic usage</AInput>
