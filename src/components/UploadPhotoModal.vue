@@ -2,21 +2,22 @@
 import { ref } from 'vue';
 
 const visible = ref(false);
+
 function showModal() {
 	visible.value = true;
 }
 
-// function handleOk() {
-// 	visible.value = false
-// }  
+function handleOk() {
+	visible.value = false
+}  
 </script>
 <template>
 	<div>
 		<AButton @click="showModal">Upload Photo</AButton>
-		<!-- <AButton v-modal:visible="visible" title="Basic Modal" @ok="handleOk">
+		<AModal v-model:visible="visible" title="Basic Modal" @ok="handleOk">
 			<p>Some contents...</p>
 			<p>Some contents...</p>
 			<p>Some contents...</p>
-		</AButton> -->
+		</AModal>
 	</div>
 </template>
