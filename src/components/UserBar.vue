@@ -3,6 +3,12 @@ import { useRoute } from 'vue-router';
 import UploadPhotoModal from './UploadPhotoModal.vue';
 import { useUserStore } from '../stores/users';
 
+interface IData {
+	owner_id: string;
+	url: string;
+	caption: string;
+}
+
 interface IProps {
 	username: string;
 	userInfo: {
@@ -10,6 +16,7 @@ interface IProps {
 		followers: number;
 		following: number;
 	}
+	addNewPost: (post: IData) => void
 }
 defineProps<IProps>();
 
@@ -22,7 +29,7 @@ const { username: profileUsername } = route.params
 	<div class="userbar-container">
 		<div class="top-content">
 			<ATypographyTitle :level="2">{{ username }}</ATypographyTitle>
-			<UploadPhotoModal v-if="userStore.user.id && profileUsername === userStore.user.username" />
+			<UploadPhotoModal v-if="userStore.user.id && profileUsername === userStore.user.username" :addNewPost="addNewPost" />
 		</div>
 		<div class="bottom-content">	
 			<ATypographyTitle :level="5">{{ userInfo.posts }} posts</ATypographyTitle>

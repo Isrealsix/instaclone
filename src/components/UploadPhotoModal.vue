@@ -10,6 +10,18 @@ const userStore = useUserStore();
 const loading = ref(false);
 const errorMessage = ref('');
 
+interface IData {
+	owner_id: string;
+	url: string;
+	caption: string;
+}
+
+interface IProps {
+	addNewPost: (post: IData) => void
+}
+
+const props = defineProps<IProps>();
+
 function showModal() {
 	visible.value = true;
 }
@@ -28,6 +40,12 @@ async function handleOk() {
 					owner_id: userStore.user.id
 				})
 			}
+			props.addNewPost({
+				url: data.path,
+				caption: caption.value,
+				owner_id: userStore.user.id
+			})
+			caption.value = '';
 		}
 	} catch (err) {
 		console.log('an error of', err)

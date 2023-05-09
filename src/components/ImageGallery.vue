@@ -1,8 +1,9 @@
 <script setup lang="ts">
 
 type Posts = {
-	id: string;
-	image: string;
+	owner_id: string;
+	url: string;
+	caption: string;
 }
 
 interface IProps {
@@ -12,7 +13,7 @@ defineProps<IProps>();
 </script>
 <template>
 	<div class="image-gallery-container">
-		<img v-for="post in posts" :key="post.id" :src="post.image" >
+		<img v-for="post in posts" :key="post.owner_id" :src="post.url" >
 	</div>
 </template>
 
