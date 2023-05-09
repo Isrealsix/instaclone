@@ -10,7 +10,7 @@ interface IData {
 }
 
 interface IProps {
-	username: string;
+	user: Record<string, string> | null;
 	userInfo: {
 		posts: number;
 		followers: number;
@@ -26,15 +26,20 @@ const { username: profileUsername } = route.params
 </script>
 
 <template>
-	<div class="userbar-container">
+	<div class="userbar-container" v-if="user">
 		<div class="top-content">
-			<ATypographyTitle :level="2">{{ username }}</ATypographyTitle>
+			<ATypographyTitle :level="2">{{ user.username }}</ATypographyTitle>
 			<UploadPhotoModal v-if="userStore.user.id && profileUsername === userStore.user.username" :addNewPost="addNewPost" />
 		</div>
 		<div class="bottom-content">	
 			<ATypographyTitle :level="5">{{ userInfo.posts }} posts</ATypographyTitle>
 			<ATypographyTitle :level="5">{{ userInfo.followers }} followers</ATypographyTitle>
 			<ATypographyTitle :level="5">{{ userInfo.following }} following</ATypographyTitle>
+		</div>
+	</div>
+	<div class="userbar-container" v-else>
+		<div class="top-content">
+			<ATypographyTitle :level="2">User not found</ATypographyTitle>
 		</div>
 	</div>
 </template>
