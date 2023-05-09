@@ -12,14 +12,14 @@ interface IData {
 const posts = ref<IData[]>([]);
 
 function addNewPost(post: IData) {
-	posts.value.push(post)
+	posts.value.unshift(post)
 }
 
 </script>
 <template>
 	<Container>
 		<div class="profile-container">
-			{{ posts }}
+			<!-- {{ posts }} -->
 			<UserBar
 					:key="($route.params.username as string)"
 					username="krisla"

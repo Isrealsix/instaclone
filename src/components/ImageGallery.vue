@@ -13,7 +13,7 @@ defineProps<IProps>();
 </script>
 <template>
 	<div class="image-gallery-container">
-		<img v-for="post in posts" :key="post.owner_id" :src="post.url" >
+		<img v-for="post in posts" :key="post.owner_id" :src="`https://whjgjphvhlwmgllekasd.supabase.co/storage/v1/object/public/images/${post.url}`" >
 	</div>
 </template>
 
