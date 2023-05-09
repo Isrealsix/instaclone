@@ -13,59 +13,73 @@ interface IData {
 }
 const posts = ref<IData[]>([]);
 const user = ref<Record<string, string> | null>(null);
-
+const loading = ref(false);
 const route = useRoute();
-const { username } = route.params
+const { username } = route.params;
 function addNewPost(post: IData) {
-	posts.value.unshift(post)
+	posts.value.unshift(post);
 }
 
 async function fetchData() {
-	const {data: userData} = await supabase.from('users')
+	loading.value = true;
+	const { data: userData } = await supabase
+		.from('users')
 		.select()
 		.eq('username', username)
 		.single();
-	if (userData) {
-		user.value = userData
+
+	if (!userData) {
+		loading.value = false;
+		return (user.value = null);
 	}
+	user.value = userData;
 
 	const { data: postsData } = await supabase
 		.from('posts')
 		.select()
 		.eq('owner_id', user.value?.id);
 
-	posts.value = postsData
+	posts.value = postsData;
+	loading.value = false;
 }
 
 onBeforeMount(() => {
 	fetchData();
-})
-
+});
 </script>
 <template>
 	<Container>
-		<div class="profile-container">
+		<div class="profile-container" v-if="!loading">
 			<!-- {{ posts }} -->
 			<UserBar
-					:key="($route.params.username as string)"
-					:user="user"
-					:userInfo="{
+				:key="($route.params.username as string)"
+				:user="user"
+				:userInfo="{
 					posts: 4,
 					followers: 121,
-					following: 12
+					following: 12,
 				}"
 				:addNewPost="addNewPost"
 			/>
-			<ImageGallery :posts="posts"
-			/>
+			<ImageGallery :posts="posts" />
+		</div>
+		<div v-else class="spinner">
+			<ASpin />
 		</div>
 	</Container>
 </template>
 
 <style scoped>
-	.profile-container {
-		display: flex;
-		flex-direction: column;
-		padding: 20px 0;
-	}
+.profile-container {
+	display: flex;
+	flex-direction: column;
+	padding: 20px 0;
+}
+
+.spinner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 85vh;
+}
 </style>
