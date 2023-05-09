@@ -19,6 +19,11 @@ async function handleLogout() {
 	await userStore.handleLogout();
 	console.log(userStore.user, 'of userrr')
 }
+
+function goToUsersProfile() {
+	router.push(`/profile/${userStore.user.username}`)
+}
+
 </script>
 <template>
 	<ALayoutHeader>
@@ -42,7 +47,7 @@ async function handleLogout() {
 					</div>
 
 					<div class="left-content" v-else>
-						<AButton type="primary">Profile</AButton>
+						<AButton type="primary" @click="goToUsersProfile">Profile</AButton>
 						<AButton type="primary" @click="handleLogout">Logout</AButton>
 					</div>
 				</div>
