@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { useRoute } from 'vue-router';
+import UploadPhotoModal from './UploadPhotoModal.vue';
+import { useUserStore } from '../stores/users';
+
 interface IProps {
 	username: string;
 	userInfo: {
@@ -9,12 +13,16 @@ interface IProps {
 }
 defineProps<IProps>();
 
+const userStore = useUserStore();
+const route = useRoute();
+const { username: profileUsername } = route.params
 </script>
 
 <template>
 	<div class="userbar-container">
 		<div class="top-content">
 			<ATypographyTitle :level="2">{{ username }}</ATypographyTitle>
+			<UploadPhotoModal v-if="userStore.user.id && profileUsername === userStore.user.username" />
 		</div>
 		<div class="bottom-content">	
 			<ATypographyTitle :level="5">{{ userInfo.posts }} posts</ATypographyTitle>
@@ -29,6 +37,11 @@ defineProps<IProps>();
 	padding-bottom: 75px;
 }
 
+.top-content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
 .bottom-content {
 	display: flex;
 	align-items: center;

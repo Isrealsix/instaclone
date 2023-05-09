@@ -8,8 +8,9 @@ import UserBar from './UserBar.vue';
 	<Container>
 		<div class="profile-container">
 			<UserBar
-				username="krisla"
-				:userInfo="{
+					:key="($route.params.username as string)"
+					username="krisla"
+					:userInfo="{
 					posts: 4,
 					followers: 121,
 					following: 12
@@ -34,7 +35,6 @@ import UserBar from './UserBar.vue';
 	.profile-container {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
 		padding: 20px 0;
 	}
 </style>
