@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { supabase } from '../supabase'
 
 const visible = ref(false);
 const caption = ref('');
@@ -8,7 +9,12 @@ function showModal() {
 	visible.value = true;
 }
 
-function handleOk() {
+async function handleOk() {
+	const fileName = crypto.randomUUID()
+	if (file.value) {
+		const response = await supabase.storage.from('images').upload('public/' + fileName, file.value);
+		console.log(response);
+	}
 	visible.value = false;
 }
 
