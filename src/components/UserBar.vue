@@ -18,6 +18,7 @@ interface IProps {
 		following: number;
 	};
 	addNewPost: (post: IData) => void;
+	isFollowing: boolean
 }
 const props = defineProps<IProps>();
 
@@ -32,6 +33,8 @@ async function followUser() {
 			following_id: props.user?.id
 		})
 }
+
+function unFollowUser() {}
 </script>
 
 <template>
@@ -44,7 +47,10 @@ async function followUser() {
 					"
 					:addNewPost="addNewPost"
 				/>
-				<AButton v-else @click="followUser">Follow</AButton>
+				<div v-else>
+					<AButton v-if="!isFollowing" @click="followUser">Follow</AButton>
+					<AButton v-else @click="unFollowUser">Unfollow</AButton>
+				</div>
 			</div>
 		</div>
 		<div class="bottom-content">

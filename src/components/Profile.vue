@@ -2,19 +2,23 @@
 import Container from './Container.vue';
 import ImageGallery from './ImageGallery.vue';
 import UserBar from './UserBar.vue';
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { supabase } from '../supabase';
+import { useUserStore } from '../stores/users';
 
 interface IData {
 	owner_id: string;
 	url: string;
 	caption: string;
 }
+const userStore = useUserStore();
 const posts = ref<IData[]>([]);
 const user = ref<Record<string, string> | null>(null);
 const loading = ref(false);
+const isFollowing = ref(false);
 const route = useRoute();
+
 const { username } = route.params;
 function addNewPost(post: IData) {
 	posts.value.unshift(post);
@@ -39,14 +43,29 @@ async function fetchData() {
 		.select()
 		.eq('owner_id', user.value?.id);
 
+	await fetchIsFollowing();
 	posts.value = postsData;
 	loading.value = false;
 }
 
+async function fetchIsFollowing() {
+	if (userStore.user?.id && userStore.user.id !== user.value?.id) {
+		const { data } = await supabase
+			.from('followers_following')
+			.select()
+			.eq('follower_id', userStore.user.id)
+			.eq('following_id', user.value?.id)
+			.single();
+		if (data) isFollowing.value = true
+	}
+}
+
+watch(userStore.user, () => {
+	fetchIsFollowing()
+})
 onBeforeMount(() => {
 	fetchData();
 });
-
 </script>
 <template>
 	<Container>
@@ -59,6 +78,7 @@ onBeforeMount(() => {
 					following: 12,
 				}"
 				:addNewPost="addNewPost"
+				:isFollowing="isFollowing"
 			/>
 			<ImageGallery :posts="posts" />
 		</div>
