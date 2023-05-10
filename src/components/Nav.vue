@@ -8,6 +8,7 @@ import { useUserStore } from '../stores/users';
 const userStore = useUserStore();
 const router = useRouter();
 const searchUsername = ref('');
+
 const onSearch = () => {
 	if (searchUsername.value) {
 		router.push(`/profile/${searchUsername.value}`);

@@ -18,15 +18,16 @@ interface IProps {
 	}
 	addNewPost: (post: IData) => void
 }
-defineProps<IProps>();
+const props = defineProps<IProps>();
 
 const userStore = useUserStore();
 const route = useRoute();
 const { username: profileUsername } = route.params
+console.log(props.user, 'in uba')
 </script>
 
 <template>
-	<div class="userbar-container" v-if="user">
+	<div class="userbar-container" v-if="user?.username">
 		<div class="top-content">
 			<ATypographyTitle :level="2">{{ user.username }}</ATypographyTitle>
 			<UploadPhotoModal v-if="userStore.user.id && profileUsername === userStore.user.username" :addNewPost="addNewPost" />

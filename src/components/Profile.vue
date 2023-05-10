@@ -46,13 +46,12 @@ async function fetchData() {
 onBeforeMount(() => {
 	fetchData();
 });
+
 </script>
 <template>
 	<Container>
 		<div class="profile-container" v-if="!loading">
-			<!-- {{ posts }} -->
 			<UserBar
-				:key="($route.params.username as string)"
 				:user="user"
 				:userInfo="{
 					posts: 4,

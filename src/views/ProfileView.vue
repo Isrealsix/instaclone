@@ -4,6 +4,6 @@ import Profile from '../components/Profile.vue';
 
 <template>
 	<main>
-		<Profile />
+		<Profile :key="($route.params.username as string)" />
 	</main>
 </template>
