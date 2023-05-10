@@ -18,7 +18,8 @@ interface IProps {
 		following: number;
 	};
 	addNewPost: (post: IData) => void;
-	isFollowing: boolean
+	isFollowing: boolean;
+	updateIsFollowing: (following: boolean) => void
 }
 const props = defineProps<IProps>();
 
@@ -27,6 +28,7 @@ const route = useRoute();
 const { username: profileUsername } = route.params;
 
 async function followUser() {
+	props.updateIsFollowing(true)
 	await supabase.from('followers_following')
 		.insert({
 			follower_id: userStore.user.id,
@@ -35,6 +37,7 @@ async function followUser() {
 }
 
 async function unFollowUser() {
+	props.updateIsFollowing(false)
 	await supabase.from('followers_following')
 		.delete()
 		.eq('follower_id', userStore.user.id)

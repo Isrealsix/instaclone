@@ -24,6 +24,9 @@ function addNewPost(post: IData) {
 	posts.value.unshift(post);
 }
 
+function updateIsFollowing(follow: boolean) {
+	isFollowing.value = follow
+}
 async function fetchData() {
 	loading.value = true;
 	const { data: userData } = await supabase
@@ -79,6 +82,7 @@ onBeforeMount(() => {
 				}"
 				:addNewPost="addNewPost"
 				:isFollowing="isFollowing"
+				:updateIsFollowing="updateIsFollowing"
 			/>
 			<ImageGallery :posts="posts" />
 		</div>
