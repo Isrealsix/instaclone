@@ -34,7 +34,12 @@ async function followUser() {
 		})
 }
 
-function unFollowUser() {}
+async function unFollowUser() {
+	await supabase.from('followers_following')
+		.delete()
+		.eq('follower_id', userStore.user.id)
+		.eq('following_id', props.user?.id)
+}
 </script>
 
 <template>
