@@ -2,6 +2,7 @@
 import { useRoute } from 'vue-router';
 import UploadPhotoModal from './UploadPhotoModal.vue';
 import { useUserStore } from '../stores/users';
+import { supabase } from '../supabase';
 
 interface IData {
 	owner_id: string;
@@ -23,7 +24,14 @@ const props = defineProps<IProps>();
 const userStore = useUserStore();
 const route = useRoute();
 const { username: profileUsername } = route.params;
-console.log(props.user, 'in uba');
+
+async function followUser() {
+	await supabase.from('followers_following')
+		.insert({
+			follower_id: userStore.user.id,
+			following_id: props.user?.id
+		})
+}
 </script>
 
 <template>
@@ -36,7 +44,7 @@ console.log(props.user, 'in uba');
 					"
 					:addNewPost="addNewPost"
 				/>
-				<AButton v-else>Follow</AButton>
+				<AButton v-else @click="followUser">Follow</AButton>
 			</div>
 		</div>
 		<div class="bottom-content">
