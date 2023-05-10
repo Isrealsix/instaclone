@@ -15,27 +15,38 @@ interface IProps {
 		posts: number;
 		followers: number;
 		following: number;
-	}
-	addNewPost: (post: IData) => void
+	};
+	addNewPost: (post: IData) => void;
 }
 const props = defineProps<IProps>();
 
 const userStore = useUserStore();
 const route = useRoute();
-const { username: profileUsername } = route.params
-console.log(props.user, 'in uba')
+const { username: profileUsername } = route.params;
+console.log(props.user, 'in uba');
 </script>
 
 <template>
 	<div class="userbar-container" v-if="user?.username">
 		<div class="top-content">
 			<ATypographyTitle :level="2">{{ user.username }}</ATypographyTitle>
-			<UploadPhotoModal v-if="userStore.user.id && profileUsername === userStore.user.username" :addNewPost="addNewPost" />
+			<div v-if="userStore.user.id">
+				<UploadPhotoModal
+					v-if="profileUsername === userStore.user.username
+					"
+					:addNewPost="addNewPost"
+				/>
+				<AButton v-else>Follow</AButton>
+			</div>
 		</div>
-		<div class="bottom-content">	
+		<div class="bottom-content">
 			<ATypographyTitle :level="5">{{ userInfo.posts }} posts</ATypographyTitle>
-			<ATypographyTitle :level="5">{{ userInfo.followers }} followers</ATypographyTitle>
-			<ATypographyTitle :level="5">{{ userInfo.following }} following</ATypographyTitle>
+			<ATypographyTitle :level="5"
+				>{{ userInfo.followers }} followers</ATypographyTitle
+			>
+			<ATypographyTitle :level="5"
+				>{{ userInfo.following }} following</ATypographyTitle
+			>
 		</div>
 	</div>
 	<div class="userbar-container" v-else>
