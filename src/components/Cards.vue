@@ -2,16 +2,18 @@
 import Card from './Card.vue';
 import { supabase } from '../supabase';
 import { useUserStore } from '../stores/users';
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 
 const userStore = useUserStore();
 
-const post = {
-	id: 1,
-	username: 'keith urban',
-	caption: 'go on',
-	img: 'https://hips.hearstapps.com/hmg-prod/images/keith-urban-gettyimages-1392268289.jpg'
-}
+// const post = {
+// 	id: 1,
+// 	username: 'keith urban',
+// 	caption: 'go on',
+// 	img: 'https://hips.hearstapps.com/hmg-prod/images/keith-urban-gettyimages-1392268289.jpg'
+// }
+
+const posts = ref([])
 
 onBeforeMount(() => {
 	fetchData()
@@ -24,17 +26,17 @@ async function fetchData() {
 
 	const owner_ids = followings.map(following => following.following_id);
 
-	const res = await supabase
+	const { data } = await supabase
 		.from('posts')
 		.select()
 		.in('owner_id', owner_ids);
 
-	console.log(res, 'of ids posts')
+	posts.value = data
 }
 </script>
 <template>
 	<div class="timeline-container">
-		<Card :post="post" />
+		<Card v-for="(post, index) in posts" :key="index" :post="post" />
 	</div>
 </template>
 

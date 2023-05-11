@@ -10,7 +10,7 @@ defineProps<IProps>()
 <template>
 	<ACard hoverable style="width: 240px" class="card">
 		<template #cover>
-			<img :src="post.img" alt="" />
+			<img :src="`https://whjgjphvhlwmgllekasd.supabase.co/storage/v1/object/public/images/${post.url}`" alt="" />
 		</template>
 		<ACardMeta :title="post.username">
 			<template #description>{{ post.caption }}</template>

@@ -10,7 +10,7 @@ const post = {
 	id: 1,
 	username: 'keith urban',
 	caption: 'go on',
-	img: 'https://hips.hearstapps.com/hmg-prod/images/keith-urban-gettyimages-1392268289.jpg'
+	url: 'https://hips.hearstapps.com/hmg-prod/images/keith-urban-gettyimages-1392268289.jpg'
 }
 
 export type TPost = typeof post;
