@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import Card from './Card.vue';
 import Container from './Container.vue';
 import { useUserStore } from '../stores/users';
+import Cards from './Cards.vue';
+import LoginMessage from './LoginMessage.vue'
 
 const userStore = useUserStore();
 
@@ -18,12 +19,8 @@ export type TPost = typeof post;
 <template>
 	<Container>
 		<div v-if="!userStore.loadingUser">
-			<div v-if="userStore.user.id" class="timeline-container">
-				<Card :post="post" />
-			</div>
-			<div v-else class="timeline-container">
-				<h2>Log in to view posts</h2>
-			</div>
+			<Cards v-if="userStore.user.id" />
+			<LoginMessage v-else />
 		</div>
 		<div v-else class="spinner">
 			<ASpin />
@@ -32,12 +29,6 @@ export type TPost = typeof post;
 </template>
 
 <style scoped>
-	.timeline-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: 20px 0;
-	}
 
 	.spinner {
 		display: flex;
