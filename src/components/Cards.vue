@@ -18,11 +18,18 @@ onBeforeMount(() => {
 })
 
 async function fetchData() {
-	const response = await supabase.from('followers_following')
+	const { data: followings } = await supabase.from('followers_following')
 	.select('following_id')
 	.eq('follower_id', userStore.user.id);
 
-	console.log(response, 'of fetchdata in cards');
+	const owner_ids = followings.map(following => following.following_id);
+
+	const res = await supabase
+		.from('posts')
+		.select()
+		.in('owner_id', owner_ids);
+
+	console.log(res, 'of ids posts')
 }
 </script>
 <template>
