@@ -29,7 +29,8 @@ async function fetchData() {
 	const { data } = await supabase
 		.from('posts')
 		.select()
-		.in('owner_id', owner_ids);
+		.in('owner_id', owner_ids)
+		.order('created_at', { ascending: false });
 
 	posts.value = data
 }
