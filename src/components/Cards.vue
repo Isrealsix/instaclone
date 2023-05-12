@@ -3,6 +3,7 @@ import Card from './Card.vue';
 import { supabase } from '../supabase';
 import { useUserStore } from '../stores/users';
 import { onBeforeMount, ref } from 'vue';
+import Observer from './Observer.vue';
 
 const userStore = useUserStore();
 
@@ -38,6 +39,7 @@ async function fetchData() {
 <template>
 	<div class="timeline-container">
 		<Card v-for="(post, index) in posts" :key="index" :post="post" />
+		<Observer />
 	</div>
 </template>
 
