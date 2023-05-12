@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 
-
+const emits = defineEmits(['intersect']);
 const observer = ref<IntersectionObserver | null>(null);
 const rootRef = ref()
 
 onMounted(() => {
 	observer.value = new IntersectionObserver(([entry]) => {
 		if (entry && entry.isIntersecting) {
-			console.log('intersecting...')
+			emits('intersect')
 		}
 	});
 	observer.value.observe(rootRef.value)

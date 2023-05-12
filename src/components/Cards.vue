@@ -35,11 +35,15 @@ async function fetchData() {
 
 	posts.value = data
 }
+
+function fetchNextSet() {
+	console.log('fetching next set of data')
+}
 </script>
 <template>
 	<div class="timeline-container">
 		<Card v-for="(post, index) in posts" :key="index" :post="post" />
-		<Observer />
+		<Observer v-if="posts.length" @intersect="fetchNextSet" />
 	</div>
 </template>
 
