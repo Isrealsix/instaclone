@@ -10,10 +10,11 @@ interface IProps {
 	posts: Posts[]
 }
 defineProps<IProps>();
+	const {VITE_BASE_PHOTO_URL} = import.meta.env
 </script>
 <template>
 	<div class="image-gallery-container">
-		<img v-for="post in posts" :key="post.owner_id" :src="`https://whjgjphvhlwmgllekasd.supabase.co/storage/v1/object/public/images/${post.url}`" >
+		<img v-for="post in posts" :key="post.owner_id" :src="`${VITE_BASE_PHOTO_URL}/${post.url}`" >
 	</div>
 </template>
 
