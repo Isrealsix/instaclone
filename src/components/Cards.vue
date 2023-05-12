@@ -14,8 +14,16 @@ const userStore = useUserStore();
 // 	img: 'https://hips.hearstapps.com/hmg-prod/images/keith-urban-gettyimages-1392268289.jpg'
 // }
 
-const posts = ref([])
+interface IPosts {
+	id: number
+	username: string
+	caption: string
+	url: string
+}
 
+const posts = ref<IPosts[] | []>([])
+const lastCardIndex = ref(2)
+const ownersId = ref([])
 onBeforeMount(() => {
 	fetchData()
 })
@@ -25,25 +33,37 @@ async function fetchData() {
 	.select('following_id')
 	.eq('follower_id', userStore.user.id);
 
-	const owner_ids = followings.map(following => following.following_id);
+	ownersId.value = followings.map(following => following.following_id);
 
 	const { data } = await supabase
 		.from('posts')
 		.select()
-		.in('owner_id', owner_ids)
+		.in('owner_id', ownersId.value)
+		.range(0, lastCardIndex.value)
 		.order('created_at', { ascending: false });
 
 	posts.value = data
 }
 
-function fetchNextSet() {
-	console.log('fetching next set of data')
+async function fetchNextSet() {
+	const { data } = await supabase
+		.from('posts')
+		.select()
+		.in('owner_id', ownersId.value)
+		.range(lastCardIndex.value + 1, lastCardIndex.value + 3)
+		.order('created_at', { ascending: false });
+
+	posts.value = [
+		...posts.value,
+			...data
+		]
+		// console.log({data})
 }
 </script>
 <template>
 	<div class="timeline-container">
 		<Card v-for="(post, index) in posts" :key="index" :post="post" />
-		<Observer v-if="posts.length" @intersect="fetchNextSet" />
+		<Observer v-if="posts?.length" @intersect="fetchNextSet" />
 	</div>
 </template>
 
