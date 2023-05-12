@@ -21,6 +21,7 @@ interface IPosts {
 	url: string
 }
 
+const reachEnd = ref(false)
 const posts = ref<IPosts[] | []>([])
 const lastCardIndex = ref(2)
 const ownersId = ref([])
@@ -46,6 +47,7 @@ async function fetchData() {
 }
 
 async function fetchNextSet() {
+	if (reachEnd.value) return;
 	const { data } = await supabase
 		.from('posts')
 		.select()
@@ -57,7 +59,12 @@ async function fetchNextSet() {
 		...posts.value,
 			...data
 		]
-		// console.log({data})
+
+	lastCardIndex.value = lastCardIndex.value + 3
+
+	if (!data.length) {
+		reachEnd.value = true;
+	}
 }
 </script>
 <template>
